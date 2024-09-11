@@ -1,6 +1,5 @@
 import { IGetUsersController, IGetUsersRepository } from "./protocols";
 
-
 export class GetUsersController implements IGetUsersController {
   getUsersRepository: IGetUsersRepository;
 
@@ -19,7 +18,7 @@ export class GetUsersController implements IGetUsersController {
     } catch (error) {
       return {
         statusCode: 500,
-        body: `Something went wrong.`,
+        body: `Something went wrong. ${error ? error : null}`,
       };
     }
   }
