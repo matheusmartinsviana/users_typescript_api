@@ -1,12 +1,15 @@
 import { IGetUsersController, IGetUsersRepository } from "./protocols";
 
+
 export class GetUsersController implements IGetUsersController {
   getUsersRepository: IGetUsersRepository;
-  constructor(private readonly getUsersRepository: IGetUsersRepository) {}
+
+  constructor(getUsersRepository: IGetUsersRepository) {
+    this.getUsersRepository = getUsersRepository;
+  }
+
   async handle() {
     try {
-      // validar requisição
-      // direcionar chamada para o Repository
       const users = await this.getUsersRepository.getUsers();
 
       return {
@@ -16,7 +19,7 @@ export class GetUsersController implements IGetUsersController {
     } catch (error) {
       return {
         statusCode: 500,
-        body: `Error: ${error.message}`,
+        body: `Something went wrong.`,
       };
     }
   }
