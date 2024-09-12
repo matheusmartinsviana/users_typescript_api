@@ -1,15 +1,13 @@
 import { User } from "../../models/users";
-import { HttpResquest, HttpResponse } from "../protocols";
-import {
-  IUpdateUserController,
-  IUpdateUserRepository,
-  UpdateUserParams,
-} from "./protocols";
+import { HttpResquest, HttpResponse, IController } from "../protocols";
+import { IUpdateUserRepository, UpdateUserParams } from "./protocols";
 
-export class UpdateUserController implements IUpdateUserController {
+export class UpdateUserController implements IController {
   constructor(private readonly updateUserRepository: IUpdateUserRepository) {}
 
-  async handle(httpRequest: HttpResquest<any>): Promise<HttpResponse<User>> {
+  async handle(
+    httpRequest: HttpResquest<UpdateUserParams>
+  ): Promise<HttpResponse<User>> {
     try {
       const id = httpRequest?.params?.id;
       const body = httpRequest?.body;
@@ -21,13 +19,20 @@ export class UpdateUserController implements IUpdateUserController {
         });
       }
 
+      if (!body) {
+        return {
+          statusCode: 400,
+          body: "Missing fields",
+        };
+      }
+
       const fieldsAllowedToUpdate: (keyof UpdateUserParams)[] = [
-        "firstName", // Fix your typo here or in UpdateUserParams
+        "firstName",
         "lastName",
         "password",
       ];
 
-      const fieldsNotAllowedToUpdate = Object.keys(body).some(
+      const fieldsNotAllowedToUpdate = Object.keys(body!).some(
         (key) => !fieldsAllowedToUpdate.includes(key as keyof UpdateUserParams)
       );
 
