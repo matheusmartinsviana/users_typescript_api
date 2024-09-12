@@ -1,7 +1,7 @@
 # Users API using Typescript
 credits to <a href='https://github.com/felipemotarocha'>@dicasparadev</a>
 
-## architecture
+## Architecture
 1. Endpoints
 2. Controllers
 3. Repositories (Repository pattern)
